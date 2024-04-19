@@ -6,26 +6,59 @@ USE pandemic;
 
 p.2.1
 CREATE TABLE Entity (
-    code VARCHAR(255) PRIMARY KEY,
+    id VARCHAR(255) PRIMARY KEY,
     entity VARCHAR(255) NOT NULL
 );
 
 p.2.2
+insert into Entity (id, entity)
+select distinct Code, Entity from infectious_cases;
+
+p.2.3
 CREATE TABLE infectious_info (
     id INT AUTO_INCREMENT PRIMARY KEY,
     country_code VARCHAR(255),
     year INT,
-    Number_yaws INT,
+    Number_yaws varchar(255),
     polio_cases INT,
     cases_guinea_worm INT,
-    Number_rabies INT,
-    Number_malaria INT,
-    Number_hiv INT,
-    Number_tuberculosis INT,
-    Number_smallpox INT,
-    Number_cholera_cases INT,
-    FOREIGN KEY (country_code) REFERENCES countries(code)
+    Number_rabies varchar(255),
+    Number_malaria varchar(255),
+    Number_hiv varchar(255),
+    Number_tuberculosis varchar(255),
+    Number_smallpox varchar(255),
+    Number_cholera_cases varchar(255),
+    FOREIGN KEY (country_code) REFERENCES entity(id)
 );
+
+p.2.4
+insert into infectious_info 
+	(country_code, 
+    year, 
+    number_yaws, 
+    polio_cases, 
+    cases_guinea_worm, 
+    number_rabies, 
+    number_malaria, 
+    number_hiv,
+    number_tuberculosis,
+    number_smallpox,
+    number_cholera_cases
+    )
+select 
+	entity.id, 
+    infectious_cases.Year, 
+    infectious_cases.Number_yaws, 
+    infectious_cases.polio_cases, 
+    infectious_cases.cases_guinea_worm, 
+    infectious_cases.Number_rabies, 
+    infectious_cases.Number_malaria, 
+    infectious_cases.Number_hiv, 
+    infectious_cases.Number_tuberculosis, 
+    infectious_cases.Number_smallpox, 
+    infectious_cases.Number_cholera_cases
+FROM infectious_cases
+JOIN entity ON infectious_cases.Code = entity.id;
 
 p.3.1
 SELECT 
